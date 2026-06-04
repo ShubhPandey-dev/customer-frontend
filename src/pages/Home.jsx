@@ -5,9 +5,9 @@ import HomeCartSection from "../components/HomeCartSection";
 import ProductCard from "../components/ProductCard";
 
 const promoCards = [
-  { title: "Smart Watches", subtitle: "Starting at Rs 200" },
-  { title: "Summer Fashion", subtitle: "Up to 60% off" },
-  { title: "Home Refresh", subtitle: "Top picks under Rs 130" },
+  // { title: "Smart Watches", subtitle: "Starting at Rs 200" },
+  // { title: "Summer Fashion", subtitle: "Up to 60% off" },
+  // { title: "Home Refresh", subtitle: "Top picks under Rs 130" },
 ];
 
 const featureHighlights = [
