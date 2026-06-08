@@ -29,7 +29,7 @@ function LoginForm() {
     setLoading(true);
 
     try {
-      const res = await fetch("http://https://ecom-common-backend.onrender.com:5000/auth/customer/login", {
+      const res = await fetch("https://ecom-common-backend.onrender.com/auth/customer/login", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

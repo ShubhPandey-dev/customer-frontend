@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import useAuthStore from "../store/authStore";
 import useCartStore from "../store/cartStore";
 
-const API_BASE_URL = "http://https://ecom-common-backend.onrender.com:5000";
+const API_BASE_URL = "https://ecom-common-backend.onrender.com";
 const FREE_DELIVERY_THRESHOLD = 599;
 const DELIVERY_CHARGE = 49;
 

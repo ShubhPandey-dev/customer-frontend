@@ -13,7 +13,7 @@ function Products() {
 
   async function getProducts() {
     try {
-      const res = await axios.get("http://https://ecom-common-backend.onrender.com:5000/customer/products/viewproducts");
+      const res = await axios.get("https://ecom-common-backend.onrender.com/customer/products/viewproducts");
       setProducts(Array.isArray(res.data) ? res.data : []);
     } catch (error) {
       console.log(error);

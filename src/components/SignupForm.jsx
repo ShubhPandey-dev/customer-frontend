@@ -21,7 +21,7 @@ function SignupForm() {
     event.preventDefault();
 
     try {
-      const res = await fetch("http://https://ecom-common-backend.onrender.com:5000/auth/customer/signup", {
+      const res = await fetch("https://ecom-common-backend.onrender.com/auth/customer/signup", {
         method: "POST",
         headers: {
           "Content-Type": "application/json"

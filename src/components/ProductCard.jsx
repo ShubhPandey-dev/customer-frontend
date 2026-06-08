@@ -35,7 +35,7 @@ function ProductCard({ product }) {
       setLoading(true);
       setMessage("");
 
-      const response = await fetch("http://https://ecom-common-backend.onrender.com:5000/customer/cart/add", {
+      const response = await fetch("https://ecom-common-backend.onrender.com/customer/cart/add", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
