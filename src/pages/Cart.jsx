@@ -181,7 +181,7 @@ function Cart() {
   );
 
   if (loading) {
-    return <p className="text-lg font-bold text-slate-600">Loading cart...</p>;
+    return <p className="text-base font-bold text-slate-600 sm:text-lg">Loading cart...</p>;
   }
 
   if (loadError) {
@@ -194,21 +194,21 @@ function Cart() {
   }
 
   return (
-    <section className="grid gap-7">
+    <section className="grid min-w-0 gap-5 md:gap-7">
       <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
         <div>
           <span className="text-xs font-black uppercase tracking-[0.3em] text-slate-500">
             Cart
           </span>
-          <h2 className="mt-2 text-4xl font-black text-[#081b45] md:text-5xl">
+          <h2 className="mt-2 break-words text-3xl font-black text-[#081b45] sm:text-4xl md:text-5xl">
             Your selected products
           </h2>
         </div>
-        <strong className="text-xl font-bold text-slate-500">{totalUnits} items</strong>
+        <strong className="text-lg font-bold text-slate-500 sm:text-xl">{totalUnits} items</strong>
       </div>
 
       {cartItems.length === 0 ? (
-        <div className="rounded-[28px] bg-white p-8 shadow-[0_10px_30px_rgba(12,28,59,0.08)]">
+        <div className="rounded-2xl bg-white p-6 shadow-[0_10px_30px_rgba(12,28,59,0.08)] sm:rounded-[28px] sm:p-8">
           <p className="text-lg text-slate-600">Cart is empty.</p>
           <Link
             className="mt-4 inline-block rounded-full bg-amber-400 px-6 py-3 font-black text-[#081b45]"
@@ -231,35 +231,35 @@ function Cart() {
               return (
                 <article
                   key={item.cart_item_id}
-                  className="grid min-h-[240px] overflow-hidden rounded-[28px] border border-slate-200 bg-white shadow-[0_16px_40px_rgba(12,28,59,0.08)] md:grid-cols-[220px_1fr]"
+                  className="grid min-h-[220px] min-w-0 overflow-hidden rounded-2xl border border-slate-200 bg-white shadow-[0_16px_40px_rgba(12,28,59,0.08)] md:grid-cols-[200px_minmax(0,1fr)] lg:grid-cols-[220px_minmax(0,1fr)] lg:rounded-[28px]"
                 >
                   <img
                     src={item.image}
                     alt={item.name}
-                    className="h-52 w-full object-cover md:h-full"
+                    className="h-48 w-full object-cover sm:h-52 md:h-full"
                   />
 
-                  <div className="flex h-full flex-col gap-4 p-6">
+                  <div className="flex h-full min-w-0 flex-col gap-4 p-4 sm:p-6">
                     <div className="flex flex-wrap items-start justify-between gap-3">
                       <div className="min-w-0">
-                        <h3 className="truncate text-2xl font-extrabold text-[#081b45]">
+                        <h3 className="line-clamp-2 text-xl font-extrabold text-[#081b45] sm:text-2xl">
                           {item.pname}
                         </h3>
-                        <p className="mt-1 truncate text-sm font-medium text-slate-500">
+                        <p className="mt-1 line-clamp-2 text-sm font-medium text-slate-500">
                           {item.cname} - {item.sname}
                         </p>
                       </div>
 
                       {hasOffer ? (
-                        <span className="rounded-full bg-emerald-100 px-3 py-1 text-xs font-black uppercase tracking-[0.16em] text-emerald-700">
+                        <span className="rounded-full bg-emerald-100 px-3 py-1 text-[10px] font-black uppercase tracking-[0.12em] text-emerald-700 sm:text-xs sm:tracking-[0.16em]">
                           {offerLabel}
                         </span>
                       ) : null}
                     </div>
 
-                    <div className="grid gap-3 rounded-[22px] bg-[linear-gradient(180deg,#fffaf0_0%,#fff_100%)] p-4">
+                    <div className="grid gap-3 rounded-[18px] bg-[linear-gradient(180deg,#fffaf0_0%,#fff_100%)] p-4 sm:rounded-[22px]">
                       <div className="flex flex-wrap items-end gap-3">
-                        <strong className="text-3xl font-black text-[#081b45]">
+                        <strong className="text-2xl font-black text-[#081b45] sm:text-3xl">
                           Rs {Number(item.unit_price || item.final_price || item.price || 0).toFixed(2)}
                         </strong>
                         {hasOffer ? (
@@ -279,7 +279,7 @@ function Cart() {
                       ) : null}
                     </div>
 
-                    <div className="flex items-center justify-between rounded-[18px] bg-slate-50 px-4 py-3 text-sm">
+                    <div className="flex items-center justify-between gap-3 rounded-[18px] bg-slate-50 px-4 py-3 text-sm">
                       <span className="font-semibold text-slate-500">
                         GST ({item.gst_percentage}%)
                       </span>
@@ -288,14 +288,14 @@ function Cart() {
                       </strong>
                     </div>
 
-                    <div className="flex items-center justify-between rounded-[18px] bg-[#081b45] px-4 py-3 text-white">
+                    <div className="flex items-center justify-between gap-3 rounded-[18px] bg-[#081b45] px-4 py-3 text-white">
                       <span className="text-sm font-semibold text-[#d6def2]">Line total</span>
                       <strong className="text-xl font-black">
                         Rs {item.total.toFixed(2)}
                       </strong>
                     </div>
 
-                    <div className="mt-auto flex flex-wrap items-center gap-3">
+                    <div className="mt-auto flex flex-wrap items-center justify-between gap-3">
                       <div className="flex items-center gap-2 rounded-full border border-slate-200 bg-white px-3 py-2">
                         <button
                           className="h-9 w-9 rounded-full bg-slate-100 text-lg font-black text-[#081b45] transition hover:bg-slate-200 disabled:opacity-40"
@@ -329,7 +329,7 @@ function Cart() {
             })}
           </div>
 
-          <aside className="grid gap-4 self-start rounded-[28px] border border-slate-200 bg-[linear-gradient(180deg,#081b45_0%,#132f66_100%)] p-7 text-white shadow-[0_18px_45px_rgba(8,27,69,0.22)]">
+          <aside className="grid gap-4 self-start rounded-2xl border border-slate-200 bg-[linear-gradient(180deg,#081b45_0%,#132f66_100%)] p-5 text-white shadow-[0_18px_45px_rgba(8,27,69,0.22)] lg:sticky lg:top-40 lg:rounded-[28px] lg:p-7">
             <div>
               <span className="text-xs font-black uppercase tracking-[0.28em] text-[#c4d0ea]">
                 Order Summary

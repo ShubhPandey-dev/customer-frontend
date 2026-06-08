@@ -208,10 +208,10 @@ function Navbar() {
     <header className="sticky top-0 z-50">
       {/* TOP NAVBAR */}
       <div className="bg-[#071330] text-white">
-        <div className="mx-auto flex max-w-[1440px] flex-wrap items-center gap-4 px-4 py-4 md:px-6">
+        <div className="mx-auto grid max-w-[1440px] gap-4 px-3 py-4 sm:px-4 md:px-6 lg:grid-cols-[auto_auto_minmax(280px,1fr)_auto] lg:items-center">
           {/* LOGO */}
           <a
-            className="text-4xl font-black tracking-tight text-white no-underline"
+            className="text-3xl font-black tracking-tight text-white no-underline sm:text-4xl"
             href="/"
           >
             <span className="text-white">shubh</span>
@@ -219,7 +219,7 @@ function Navbar() {
           </a>
 
           {/* LOCATION */}
-          <div className="grid gap-0.5 text-slate-200">
+          <div className="hidden gap-0.5 text-slate-200 sm:grid">
             <small className="text-[11px] uppercase tracking-[0.3em]">
               Deliver to.
             </small>
@@ -227,9 +227,9 @@ function Navbar() {
           </div>
 
           {/* SEARCH BAR */}
-          <div className="grid flex-1 grid-cols-[120px_1fr_110px] overflow-hidden rounded-full bg-white shadow-sm">
+          <div className="grid min-w-0 grid-cols-[96px_minmax(0,1fr)] overflow-hidden rounded-2xl bg-white shadow-sm sm:grid-cols-[120px_minmax(0,1fr)_100px] sm:rounded-full">
             <select
-              className="border-0 bg-slate-100 px-3 py-3 text-sm text-slate-700 outline-none"
+              className="min-w-0 border-0 bg-slate-100 px-3 py-3 text-xs text-slate-700 outline-none sm:text-sm"
               value={searchCategory}
               onChange={(event) => {
                 setSearchCategory(event.target.value);
@@ -245,7 +245,7 @@ function Navbar() {
             </select>
 
             <input
-              className="border-0 px-4 py-3 text-sm text-slate-700 outline-none"
+              className="min-w-0 border-0 px-3 py-3 text-sm text-slate-700 outline-none sm:px-4"
               placeholder="Search products , brands , categories , subcategories , price"
               type="text"
               value={searchText}
@@ -261,7 +261,7 @@ function Navbar() {
             />
 
             <button
-              className="bg-amber-400 px-4 py-3 text-sm font-bold text-slate-900"
+              className="col-span-2 bg-amber-400 px-4 py-3 text-sm font-bold text-slate-900 sm:col-span-1"
               type="button"
               onClick={handleSearch}
             >
@@ -270,10 +270,10 @@ function Navbar() {
           </div>
 
           {/* RIGHT SIDE MENU */}
-          <div className="ml-auto flex items-center gap-4 text-sm font-bold text-white">
+          <div className="flex min-w-0 flex-wrap items-center gap-2 text-sm font-bold text-white lg:justify-end">
             {token ? (
               <button
-                className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-white"
+                className="rounded-full border border-white/15 bg-white/10 px-3 py-2 text-white sm:px-4"
                 onClick={handleLogout}
                 type="button"
               >
@@ -282,7 +282,7 @@ function Navbar() {
             ) : (
               <>
                 <Link
-                  className="rounded-full border border-white/15 bg-white/10 px-4 py-2 text-white no-underline"
+                  className="rounded-full border border-white/15 bg-white/10 px-3 py-2 text-white no-underline sm:px-4"
                   to="/login"
                 >
                   Login
@@ -290,7 +290,7 @@ function Navbar() {
                 
 
                 <Link
-                  className="border-0 bg-transparent text-white no-underline"
+                  className="rounded-full px-2 py-2 text-white no-underline hover:bg-white/10"
                   to="/signup"
                 >
                   Signup
@@ -299,14 +299,14 @@ function Navbar() {
             )}
 
             <NavLink
-              className="border-0 bg-transparent text-white no-underline"
+              className="rounded-full px-2 py-2 text-white no-underline hover:bg-white/10"
               to="/products"
             >
               Products
             </NavLink>
 
             <NavLink
-              className="border-0 bg-transparent text-white"
+              className="rounded-full px-2 py-2 text-white no-underline hover:bg-white/10"
               to="/orderHistory"
             >
               Orders
@@ -377,11 +377,11 @@ function Navbar() {
                   <div
                     style={{
                       position: 'fixed',
-                      top: '70px',
-                      right: '20px',
+                      top: '72px',
+                      right: '12px',
                       zIndex: 999999,
                       width: '380px',
-                      maxWidth: 'calc(100vw - 40px)',
+                      maxWidth: 'calc(100vw - 24px)',
                       backgroundColor: 'white',
                       borderRadius: '16px',
                       border: '1px solid #e2e8f0',
@@ -505,7 +505,7 @@ function Navbar() {
             ) : null}
 
             <NavLink
-              className="relative pl-5 text-white no-underline"
+              className="relative rounded-full py-2 pl-6 pr-2 text-white no-underline hover:bg-white/10"
               to="/cart"
             >
               <span className="absolute left-0 top-[-8px] grid h-5 w-5 place-items-center rounded-full bg-amber-400 text-[11px] font-black text-slate-950">
@@ -519,9 +519,9 @@ function Navbar() {
 
       {/* CATEGORY NAVBAR */}
       <div className="relative bg-[#1b2947]">
-        <div className="mx-auto flex max-w-[1440px] flex-wrap items-center justify-center gap-3 px-4 py-3 md:px-6">
+        <div className="mx-auto flex max-w-[1440px] items-center gap-2 overflow-x-auto px-3 py-3 sm:px-4 md:px-6">
           <button
-            className="rounded-full bg-amber-400 px-5 py-2 text-xs font-bold uppercase tracking-[0.24em] text-[#081b45]"
+            className="shrink-0 rounded-full bg-amber-400 px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] text-[#081b45] sm:px-5 sm:tracking-[0.24em]"
             type="button"
             onClick={() => setIsMenuOpen((current) => !current)}
           >
@@ -531,7 +531,7 @@ function Navbar() {
           {category.slice(0, 6).map((item) => (
             <button
               key={item.id}
-              className={`rounded-full px-5 py-2 text-xs font-bold uppercase tracking-[0.24em] text-white ${
+              className={`shrink-0 rounded-full px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] text-white sm:px-5 sm:tracking-[0.24em] ${
                 activeCategory === item.cname ? "bg-[#3b4c72]" : "bg-[#293858]"
               }`}
               type="button"
@@ -547,8 +547,8 @@ function Navbar() {
 
         {isMenuOpen && (
           <div className="absolute left-0 right-0 top-full border-t border-white/10 bg-[#132443] shadow-[0_24px_50px_rgba(0,0,0,0.28)]">
-            <div className="min-h-[calc(100vh-140px)] w-full">
-              <div className="mx-auto grid max-w-[1440px] gap-6 px-4 py-5 md:grid-cols-[280px_1fr] md:px-6">
+            <div className="max-h-[calc(100vh-120px)] w-full overflow-y-auto">
+              <div className="mx-auto grid max-w-[1440px] gap-4 px-3 py-5 sm:px-4 md:grid-cols-[260px_1fr] md:px-6">
                 <aside className="rounded-2xl bg-[#1f3155] p-4">
                   <h4 className="mb-3 text-xs font-black uppercase tracking-[0.24em] text-slate-300">
                     Categories

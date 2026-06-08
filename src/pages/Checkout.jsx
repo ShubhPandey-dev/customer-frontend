@@ -335,11 +335,11 @@ function Checkout() {
   }
 
   if (loading) {
-    return <p className="text-lg font-bold text-slate-600">Loading checkout...</p>;
+    return <p className="text-base font-bold text-slate-600 sm:text-lg">Loading checkout...</p>;
   }
 
   return (
-    <section className="relative overflow-hidden rounded-[32px] bg-[linear-gradient(135deg,#f8f5ef_0%,#fffdf8_40%,#eef4ff_100%)] p-4 md:p-8">
+    <section className="relative overflow-hidden rounded-2xl bg-[linear-gradient(135deg,#f8f5ef_0%,#fffdf8_40%,#eef4ff_100%)] p-3 sm:p-4 md:rounded-[32px] md:p-8">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,196,0,0.18),transparent_30%),radial-gradient(circle_at_bottom_right,rgba(8,27,69,0.12),transparent_28%)]" />
 
       <div className="relative grid gap-7">
@@ -348,7 +348,7 @@ function Checkout() {
             <span className="text-xs font-black uppercase tracking-[0.32em] text-slate-500">
               Checkout
             </span>
-            <h1 className="mt-2 text-4xl font-black leading-tight text-[#081b45] md:text-5xl">
+            <h1 className="mt-2 break-words text-3xl font-black leading-tight text-[#081b45] sm:text-4xl md:text-5xl">
               Confirm your order with delivery details
             </h1>
             <p className="mt-3 max-w-2xl text-base text-slate-600">
@@ -356,7 +356,7 @@ function Checkout() {
             </p>
           </div>
 
-          <div className="rounded-[24px] bg-white/80 px-5 py-4 shadow-[0_12px_30px_rgba(12,28,59,0.08)] backdrop-blur">
+          <div className="rounded-2xl bg-white/80 px-5 py-4 shadow-[0_12px_30px_rgba(12,28,59,0.08)] backdrop-blur md:rounded-[24px]">
             <p className="text-sm font-bold uppercase tracking-[0.18em] text-slate-500">
               Cart Snapshot
             </p>
@@ -387,18 +387,18 @@ function Checkout() {
         ) : (
           <div className="grid gap-6 xl:grid-cols-[1.1fr_0.9fr]">
             <div className="grid gap-6">
-              <section className="rounded-[30px] bg-white p-6 shadow-[0_16px_40px_rgba(12,28,59,0.08)] md:p-8">
+              <section className="rounded-2xl bg-white p-4 shadow-[0_16px_40px_rgba(12,28,59,0.08)] sm:p-6 md:rounded-[30px] md:p-8">
                 <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
                   <div>
                     <span className="text-xs font-black uppercase tracking-[0.28em] text-slate-500">
                       Delivery Address
                     </span>
-                    <h2 className="mt-2 text-3xl font-black text-[#081b45]">
+                    <h2 className="mt-2 text-2xl font-black text-[#081b45] sm:text-3xl">
                       Choose saved address
                     </h2>
                   </div>
                   <button
-                    className="rounded-full border border-slate-200 px-5 py-2 text-sm font-bold text-[#081b45] transition hover:border-amber-400 hover:bg-amber-50"
+                    className="rounded-full border border-slate-200 px-4 py-2 text-sm font-bold text-[#081b45] transition hover:border-amber-400 hover:bg-amber-50 sm:px-5"
                     type="button"
                     onClick={() => {
                       setShowAddressForm((current) => !current);
@@ -417,7 +417,7 @@ function Checkout() {
                       return (
                         <article
                           key={address.id}
-                          className={`rounded-[24px] border p-5 transition ${
+                          className={`rounded-2xl border p-4 transition sm:rounded-[24px] sm:p-5 ${
                             isSelected
                               ? "border-[#081b45] bg-[#f4f7ff] shadow-[0_12px_25px_rgba(8,27,69,0.10)]"
                               : "border-slate-200 bg-[#fcfbf7]"
@@ -652,13 +652,13 @@ function Checkout() {
                 ) : null}
               </section>
 
-              <section className="rounded-[30px] bg-white p-6 shadow-[0_16px_40px_rgba(12,28,59,0.08)] md:p-8">
+              <section className="rounded-2xl bg-white p-4 shadow-[0_16px_40px_rgba(12,28,59,0.08)] sm:p-6 md:rounded-[30px] md:p-8">
                 <div className="flex flex-col gap-2 md:flex-row md:items-end md:justify-between">
                   <div>
                     <span className="text-xs font-black uppercase tracking-[0.28em] text-slate-500">
                       Basket Review
                     </span>
-                    <h2 className="mt-2 text-3xl font-black text-[#081b45]">
+                    <h2 className="mt-2 text-2xl font-black text-[#081b45] sm:text-3xl">
                       Items in this order
                     </h2>
                   </div>
@@ -669,18 +669,18 @@ function Checkout() {
                   {cartItems.map((item) => (
                     <article
                       key={item.cart_item_id}
-                      className="grid gap-4 rounded-[28px] border border-slate-200 bg-white p-4 shadow-[0_12px_30px_rgba(12,28,59,0.06)] md:grid-cols-[120px_1fr_auto]"
+                      className="grid min-w-0 gap-4 rounded-2xl border border-slate-200 bg-white p-4 shadow-[0_12px_30px_rgba(12,28,59,0.06)] md:grid-cols-[120px_minmax(0,1fr)_auto] md:rounded-[28px]"
                     >
                       <img
                         src={item.image}
                         alt={item.pname}
-                        className="h-28 w-full rounded-[22px] object-cover"
+                        className="h-40 w-full rounded-[18px] object-cover sm:h-48 md:h-28 md:rounded-[22px]"
                       />
 
                       <div className="grid gap-3">
                         <div className="flex flex-wrap items-start justify-between gap-3">
                           <div>
-                            <h3 className="text-xl font-black text-[#081b45]">{item.pname}</h3>
+                            <h3 className="line-clamp-2 text-lg font-black text-[#081b45] sm:text-xl">{item.pname}</h3>
                             <p className="mt-1 text-sm font-medium text-slate-500">
                               {item.cname} • {item.sname}
                             </p>
@@ -696,7 +696,7 @@ function Checkout() {
                         </div>
 
                         <div className="flex flex-wrap items-end gap-3 rounded-[22px] bg-[linear-gradient(180deg,#fffaf0_0%,#fff_100%)] p-4">
-                          <strong className="text-3xl font-black text-[#081b45]">
+                          <strong className="text-2xl font-black text-[#081b45] sm:text-3xl">
                             Rs {Number(item.unit_price || item.final_price || item.price || 0).toFixed(2)}
                           </strong>
                           {Number(item.discount_amount || 0) > 0 ? (
@@ -741,11 +741,11 @@ function Checkout() {
             </div>
 
             <aside className="grid gap-6 self-start">
-              <section className="rounded-[30px] bg-[#081b45] p-6 text-white shadow-[0_20px_50px_rgba(8,27,69,0.28)] md:p-8">
+              <section className="rounded-2xl bg-[#081b45] p-5 text-white shadow-[0_20px_50px_rgba(8,27,69,0.28)] md:sticky md:top-40 md:rounded-[30px] md:p-8">
                 <span className="text-xs font-black uppercase tracking-[0.28em] text-[#c4d0ea]">
                   Payment
                 </span>
-                <h2 className="mt-2 text-3xl font-black">Complete the checkout</h2>
+                <h2 className="mt-2 text-2xl font-black sm:text-3xl">Complete the checkout</h2>
                 <p className="mt-3 text-sm leading-6 text-[#d6def2]">
                   Original price, offer savings, and GST are already aligned with the backend total.
                 </p>

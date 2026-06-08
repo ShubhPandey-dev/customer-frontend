@@ -62,11 +62,11 @@ function Products() {
   }, [products, searchQuery, selectedCategory, selectedSubcategory]);
 
   return (
-    <section className="relative overflow-hidden rounded-[32px] bg-[linear-gradient(135deg,#f8f5ef_0%,#fffdf8_45%,#eef4ff_100%)] p-4 md:p-8">
+    <section className="relative overflow-hidden rounded-2xl bg-[linear-gradient(135deg,#f8f5ef_0%,#fffdf8_45%,#eef4ff_100%)] p-3 sm:p-4 md:rounded-[32px] md:p-8">
       <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,196,0,0.16),transparent_28%),radial-gradient(circle_at_bottom_right,rgba(8,27,69,0.10),transparent_24%)]" />
 
       <div className="relative grid gap-7">
-        <div className="flex flex-col gap-4 rounded-[28px] bg-white/80 p-6 shadow-[0_16px_40px_rgba(12,28,59,0.08)] backdrop-blur md:flex-row md:items-end md:justify-between md:p-8">
+        <div className="flex flex-col gap-4 rounded-2xl bg-white/80 p-4 shadow-[0_16px_40px_rgba(12,28,59,0.08)] backdrop-blur md:flex-row md:items-end md:justify-between md:rounded-[28px] md:p-8">
           <div className="grid gap-3">
             <div className="flex flex-wrap items-center gap-3">
               <span className="rounded-full bg-[#081b45] px-3 py-1 text-xs font-black uppercase tracking-[0.2em] text-white">
@@ -77,7 +77,7 @@ function Products() {
               </span>
             </div>
 
-            <h2 className="text-4xl font-black leading-tight text-[#081b45] md:text-5xl">
+            <h2 className="break-words text-3xl font-black leading-tight text-[#081b45] sm:text-4xl md:text-5xl">
               {searchQuery || selectedSubcategory || selectedCategory || "All products"}
             </h2>
 
@@ -86,7 +86,7 @@ function Products() {
             </p>
           </div>
 
-          <div className="grid gap-3 rounded-[24px] bg-[#081b45] px-5 py-4 text-white shadow-[0_16px_36px_rgba(8,27,69,0.22)]">
+          <div className="grid gap-3 rounded-2xl bg-[#081b45] px-5 py-4 text-white shadow-[0_16px_36px_rgba(8,27,69,0.22)] md:rounded-[24px]">
             <span className="text-xs font-black uppercase tracking-[0.2em] text-[#c4d0ea]">
               Results
             </span>
@@ -95,7 +95,7 @@ function Products() {
           </div>
         </div>
 
-        <div className="grid items-stretch grid-cols-1 gap-5 md:grid-cols-2 xl:grid-cols-4">
+        <div className="grid grid-cols-1 items-stretch gap-4 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-4">
         {filteredProducts.map((product) => (
           <ProductCard key={product.id} product={product} />
         ))}
