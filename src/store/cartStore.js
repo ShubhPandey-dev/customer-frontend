@@ -13,7 +13,7 @@ const useCartStore = create((set) => ({
     }
 
     try {
-      const res = await axios.get("http://localhost:5000/customer/cart/viewCart", {
+      const res = await axios.get("http://https://ecom-common-backend.onrender.com:5000/customer/cart/viewCart", {
         headers: {
           Authorization: `Bearer ${token}`,
         },

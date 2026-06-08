@@ -31,7 +31,7 @@ function Home() {
 
   async function getProducts(){
     const res = await axios.get(
-      "http://localhost:5000/customer/products/viewproducts"
+      "http://https://ecom-common-backend.onrender.com:5000/customer/products/viewproducts"
     );
     setProducts(res.data);
   }

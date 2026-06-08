@@ -4,7 +4,7 @@ import axios from "axios";
 import useAuthStore from "../store/authStore";
 import useCartStore from "../store/cartStore";
 
-const API_BASE_URL = "http://localhost:5000";
+const API_BASE_URL = "http://https://ecom-common-backend.onrender.com:5000";
 const SEEN_BELL_KEY = "shubhdeal_seen_notification_ids";
 
 function readSeenNotificationIds() {
@@ -39,7 +39,7 @@ function Navbar() {
   async function getCategory() {
     try {
       const result = await axios.get(
-        "http://localhost:5000/customer/category/viewcategory",
+        "http://https://ecom-common-backend.onrender.com:5000/customer/category/viewcategory",
       );
       setCategory(result.data);
     } catch (error) {
@@ -50,7 +50,7 @@ function Navbar() {
   async function getSubcategories() {
     try {
       const result = await axios.get(
-        "http://localhost:5000/customer/products/viewproducts",
+        "http://https://ecom-common-backend.onrender.com:5000/customer/products/viewproducts",
       );
       const products = Array.isArray(result.data) ? result.data : [];
 

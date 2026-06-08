@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import useAuthStore from "../store/authStore";
 import InvoiceButton from "./InvoiceButton";
 
-const API_BASE_URL = "http://localhost:5000";
+const API_BASE_URL = "http://https://ecom-common-backend.onrender.com:5000";
 
 const statusStyles = {
   pending: "bg-amber-100 text-amber-700",

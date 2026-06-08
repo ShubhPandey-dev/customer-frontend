@@ -35,7 +35,7 @@ function markBrowserNotificationSeen(notificationId) {
 
 async function saveToken(token, customerToken) {
   const response = await fetch(
-    "http://localhost:5000/api/notification/save-fcm-token",
+    "http://https://ecom-common-backend.onrender.com:5000/api/notification/save-fcm-token",
     {
       method: "POST",
       headers: {

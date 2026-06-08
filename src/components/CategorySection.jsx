@@ -15,7 +15,7 @@ function CategorySection() {
 
   async function getCategory(){
     try {
-      let result = await fetch('http://localhost:5000/customer/category/viewcategory');
+      let result = await fetch('http://https://ecom-common-backend.onrender.com:5000/customer/category/viewcategory');
       let res = await result.json();
       setCategory(Array.isArray(res) ? res : []);
     } catch (error) {

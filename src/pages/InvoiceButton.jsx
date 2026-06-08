@@ -1,7 +1,7 @@
 import axios from "axios";
 import { useState } from "react";
 
-const API_BASE_URL = "http://localhost:5000";
+const API_BASE_URL = "http://https://ecom-common-backend.onrender.com:5000";
 
 function InvoiceButton({ orderId, token }) {
   const [loading, setLoading] = useState(false);

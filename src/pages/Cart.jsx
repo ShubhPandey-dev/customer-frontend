@@ -28,7 +28,7 @@ function Cart() {
   async function getCartItems() {
     setLoadError("");
     try {
-      const res = await axios.get("http://localhost:5000/customer/cart/viewCart", {
+      const res = await axios.get("http://https://ecom-common-backend.onrender.com:5000/customer/cart/viewCart", {
         headers: { Authorization: `Bearer ${token}` },
       });
 
@@ -83,7 +83,7 @@ function Cart() {
 
     try {
       await axios.patch(
-        `http://localhost:5000/customer/cart/item/${item.cart_item_id}`,
+        `http://https://ecom-common-backend.onrender.com:5000/customer/cart/item/${item.cart_item_id}`,
         { quantity: nextQuantity },
         { headers: { Authorization: `Bearer ${token}` } }
       );
@@ -123,7 +123,7 @@ function Cart() {
     setActionLoadingId(item.cart_item_id);
 
     try {
-      await axios.delete(`http://localhost:5000/customer/cart/item/${item.cart_item_id}`, {
+      await axios.delete(`http://https://ecom-common-backend.onrender.com:5000/customer/cart/item/${item.cart_item_id}`, {
         headers: { Authorization: `Bearer ${token}` },
       });
 
