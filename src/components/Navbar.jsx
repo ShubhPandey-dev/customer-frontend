@@ -20,6 +20,7 @@ function Navbar() {
   const [subCategoryMap, setSubCategoryMap] = useState({});
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("");
+  const [isSearchSticky, setIsSearchSticky] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [searchCategory, setSearchCategory] = useState("All");
   const [debouncedSearch, setDebouncedSearch] = useState("");
@@ -37,6 +38,7 @@ function Navbar() {
   const navigate = useNavigate();
   
   const scrollTimeoutRef = useRef(null);
+  const topNavbarRef = useRef(null);
 
   async function getCategory() {
     try {
@@ -128,6 +130,53 @@ function Navbar() {
       setActiveCategory(category[0].cname);
     }
   }, [category, activeCategory]);
+
+  // Only for search bar sticky
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    
+    let ticking = false;
+    
+    const handleScroll = () => {
+      if (ticking) return;
+      
+      ticking = true;
+      
+      requestAnimationFrame(() => {
+        const currentScrollY = window.scrollY;
+        const topNavHeight = topNavbarRef.current?.offsetHeight || 0;
+        
+        // Make search bar sticky when scrolled past top navbar
+        if (currentScrollY > topNavHeight - 10) {
+          setIsSearchSticky(true);
+        } else {
+          setIsSearchSticky(false);
+        }
+        
+        ticking = false;
+      });
+    };
+    
+    // Initial calculation
+    handleScroll();
+    
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    
+    const handleResize = () => {
+      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+      scrollTimeoutRef.current = setTimeout(() => {
+        handleScroll();
+      }, 100);
+    };
+    
+    window.addEventListener("resize", handleResize);
+    
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleResize);
+      if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
+    };
+  }, []);
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -223,9 +272,9 @@ function Navbar() {
   }, [seenNotificationIds]);
 
   return (
-    <header className="sticky top-0 z-50">
-      {/* TOP NAVBAR */}
-      <div className="bg-[#071330] text-white">
+    <>
+      {/* TOP NAVBAR - Normal */}
+      <div ref={topNavbarRef} className="bg-[#071330] text-white">
         <div className="mx-auto grid max-w-[1440px] gap-3 px-3 py-3 sm:gap-4 sm:px-4 sm:py-4 md:px-6 lg:grid-cols-[auto_auto_minmax(280px,1fr)_auto] lg:items-center">
           {/* LOGO */}
           <a
@@ -289,9 +338,7 @@ function Navbar() {
           </div>
 
           {/* RIGHT SIDE MENU */}
-          <div
-            className="flex min-w-0 flex-wrap items-center gap-2 text-sm font-bold text-white lg:justify-end"
-          >
+          <div className="flex min-w-0 flex-wrap items-center gap-2 text-sm font-bold text-white lg:justify-end">
             {token ? (
               <button
                 className="rounded-full border border-white/15 bg-white/10 px-3 py-2 text-white sm:px-4"
@@ -309,7 +356,6 @@ function Navbar() {
                   Login
                 </Link>
                 
-
                 <Link
                   className="rounded-full px-2 py-2 text-white no-underline hover:bg-white/10"
                   to="/signup"
@@ -335,7 +381,6 @@ function Navbar() {
 
             {token ? (
               <div style={{ position: 'relative', display: 'inline-block' }}>
-                {/* NOTIFICATION BUTTON */}
                 <button
                   style={{
                     position: 'relative',
@@ -367,7 +412,6 @@ function Navbar() {
                     <path d="M9 17a3 3 0 0 0 6 0" />
                   </svg>
 
-                  {/* UNREAD COUNT */}
                   {unreadNotificationCount > 0 && (
                     <span
                       style={{
@@ -393,7 +437,6 @@ function Navbar() {
                   )}
                 </button>
 
-                {/* NOTIFICATION DROPDOWN */}
                 {isNotificationOpen && (
                   <div
                     style={{
@@ -410,7 +453,6 @@ function Navbar() {
                       overflow: 'hidden'
                     }}
                   >
-                    {/* Header */}
                     <div
                       style={{
                         borderBottom: '1px solid #f1f5f9',
@@ -438,7 +480,6 @@ function Navbar() {
                       </div>
                     </div>
 
-                    {/* Notification List */}
                     <div style={{ maxHeight: '460px', overflowY: 'auto', backgroundColor: 'white' }}>
                       {notifications.length > 0 ? (
                         notifications.map((notification) => (
@@ -499,7 +540,6 @@ function Navbar() {
                       )}
                     </div>
 
-                    {/* Footer */}
                     {notifications.length > 0 && (
                       <div style={{ borderTop: '1px solid #f1f5f9', backgroundColor: '#f8fafc', padding: '12px 20px', textAlign: 'center' }}>
                         <button
@@ -527,6 +567,58 @@ function Navbar() {
           </div>
         </div>
       </div>
+
+      {/* STICKY SEARCH BAR - Only shows when scrolled */}
+      {isSearchSticky && (
+        <div className="sticky top-0 z-50 bg-[#071330] py-2 shadow-lg">
+          <div className="mx-auto px-3 sm:px-4 md:px-6">
+            <div className="mx-auto max-w-[1440px]">
+              <div className="grid min-w-0 grid-cols-[90px_minmax(0,1fr)_70px] overflow-hidden rounded-xl bg-white shadow-sm sm:grid-cols-[120px_minmax(0,1fr)_100px] sm:rounded-full">
+                <select
+                  className="min-w-0 border-0 bg-slate-100 px-2 py-2 text-xs text-slate-700 outline-none sm:px-3 sm:py-3 sm:text-sm"
+                  value={searchCategory}
+                  onChange={(event) => {
+                    setSearchCategory(event.target.value);
+                    setHasSearched(true);
+                  }}
+                >
+                  <option>All</option>
+                  {category.map((item) => (
+                    <option key={item.id} value={item.cname}>
+                      {item.cname}
+                    </option>
+                  ))}
+                </select>
+
+                <input
+                  className="min-w-0 border-0 px-3 py-2 text-sm text-slate-700 outline-none sm:px-4 sm:py-3"
+                  placeholder="Search products"
+                  type="text"
+                  value={searchText}
+                  onChange={(event) => {
+                    setSearchText(event.target.value);
+                    setHasSearched(true);
+                  }}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      handleSearch();
+                    }
+                  }}
+                />
+
+                <button
+                  className="bg-amber-400 px-3 py-2 text-xs font-bold text-slate-900 sm:px-4 sm:py-3 sm:text-sm"
+                  type="button"
+                  onClick={handleSearch}
+                >
+                  <span className="sm:hidden">Go</span>
+                  <span className="hidden sm:inline">Search</span>
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* CATEGORY NAVBAR */}
       <div className="relative bg-[#1b2947]">
@@ -618,7 +710,7 @@ function Navbar() {
           </div>
         )}
       </div>
-    </header>
+    </>
   );
 }
 
