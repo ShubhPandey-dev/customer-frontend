@@ -20,6 +20,7 @@ function Navbar() {
   const [subCategoryMap, setSubCategoryMap] = useState({});
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("");
+  const [isMobileChromeHidden, setIsMobileChromeHidden] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [searchCategory, setSearchCategory] = useState("All");
   const [debouncedSearch, setDebouncedSearch] = useState("");
@@ -126,6 +127,34 @@ function Navbar() {
   }, [category, activeCategory]);
 
   useEffect(() => {
+    let lastScrollY = window.scrollY;
+
+    function handleScroll() {
+      const currentScrollY = window.scrollY;
+      const isSmallScreen = window.innerWidth < 640;
+
+      if (!isSmallScreen || currentScrollY < 24) {
+        setIsMobileChromeHidden(false);
+      } else if (currentScrollY > lastScrollY + 8) {
+        setIsMobileChromeHidden(true);
+        setIsMenuOpen(false);
+      } else if (currentScrollY < lastScrollY - 8) {
+        setIsMobileChromeHidden(false);
+      }
+
+      lastScrollY = Math.max(currentScrollY, 0);
+    }
+
+    window.addEventListener("scroll", handleScroll, { passive: true });
+    window.addEventListener("resize", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("resize", handleScroll);
+    };
+  }, []);
+
+  useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(searchText.trim());
     }, 600);
@@ -208,10 +237,12 @@ function Navbar() {
     <header className="sticky top-0 z-50">
       {/* TOP NAVBAR */}
       <div className="bg-[#071330] text-white">
-        <div className="mx-auto grid max-w-[1440px] gap-4 px-3 py-4 sm:px-4 md:px-6 lg:grid-cols-[auto_auto_minmax(280px,1fr)_auto] lg:items-center">
+        <div className="mx-auto grid max-w-[1440px] gap-3 px-3 py-3 sm:gap-4 sm:px-4 sm:py-4 md:px-6 lg:grid-cols-[auto_auto_minmax(280px,1fr)_auto] lg:items-center">
           {/* LOGO */}
           <a
-            className="text-3xl font-black tracking-tight text-white no-underline sm:text-4xl"
+            className={`text-3xl font-black tracking-tight text-white no-underline sm:text-4xl ${
+              isMobileChromeHidden ? "hidden sm:inline-block" : ""
+            }`}
             href="/"
           >
             <span className="text-white">shubh</span>
@@ -227,9 +258,9 @@ function Navbar() {
           </div>
 
           {/* SEARCH BAR */}
-          <div className="grid min-w-0 grid-cols-[96px_minmax(0,1fr)] overflow-hidden rounded-2xl bg-white shadow-sm sm:grid-cols-[120px_minmax(0,1fr)_100px] sm:rounded-full">
+          <div className="grid min-w-0 grid-cols-[82px_minmax(0,1fr)_56px] overflow-hidden rounded-xl bg-white shadow-sm sm:grid-cols-[120px_minmax(0,1fr)_100px] sm:rounded-full">
             <select
-              className="min-w-0 border-0 bg-slate-100 px-3 py-3 text-xs text-slate-700 outline-none sm:text-sm"
+              className="min-w-0 border-0 bg-slate-100 px-2 py-3 text-xs text-slate-700 outline-none sm:px-3 sm:text-sm"
               value={searchCategory}
               onChange={(event) => {
                 setSearchCategory(event.target.value);
@@ -246,7 +277,7 @@ function Navbar() {
 
             <input
               className="min-w-0 border-0 px-3 py-3 text-sm text-slate-700 outline-none sm:px-4"
-              placeholder="Search products , brands , categories , subcategories , price"
+              placeholder="Search products"
               type="text"
               value={searchText}
               onChange={(event) => {
@@ -261,16 +292,21 @@ function Navbar() {
             />
 
             <button
-              className="col-span-2 bg-amber-400 px-4 py-3 text-sm font-bold text-slate-900 sm:col-span-1"
+              className="bg-amber-400 px-2 py-3 text-xs font-bold text-slate-900 sm:px-4 sm:text-sm"
               type="button"
               onClick={handleSearch}
             >
-              Search
+              <span className="sm:hidden">Go</span>
+              <span className="hidden sm:inline">Search</span>
             </button>
           </div>
 
           {/* RIGHT SIDE MENU */}
-          <div className="flex min-w-0 flex-wrap items-center gap-2 text-sm font-bold text-white lg:justify-end">
+          <div
+            className={`flex min-w-0 flex-wrap items-center gap-2 text-sm font-bold text-white lg:justify-end ${
+              isMobileChromeHidden ? "hidden sm:flex" : ""
+            }`}
+          >
             {token ? (
               <button
                 className="rounded-full border border-white/15 bg-white/10 px-3 py-2 text-white sm:px-4"
@@ -518,7 +554,11 @@ function Navbar() {
       </div>
 
       {/* CATEGORY NAVBAR */}
-      <div className="relative bg-[#1b2947]">
+      <div
+        className={`relative bg-[#1b2947] ${
+          isMobileChromeHidden ? "hidden sm:block" : ""
+        }`}
+      >
         <div className="mx-auto flex max-w-[1440px] items-center gap-2 overflow-x-auto px-3 py-3 sm:px-4 md:px-6">
           <button
             className="shrink-0 rounded-full bg-amber-400 px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] text-[#081b45] sm:px-5 sm:tracking-[0.24em]"
