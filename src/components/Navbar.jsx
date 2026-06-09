@@ -20,7 +20,7 @@ function Navbar() {
   const [subCategoryMap, setSubCategoryMap] = useState({});
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeCategory, setActiveCategory] = useState("");
-  const [isNavbarVisible, setIsNavbarVisible] = useState(true);
+  const [isSearchSticky, setIsSearchSticky] = useState(false);
   const [searchText, setSearchText] = useState("");
   const [searchCategory, setSearchCategory] = useState("All");
   const [debouncedSearch, setDebouncedSearch] = useState("");
@@ -38,8 +38,8 @@ function Navbar() {
   const navigate = useNavigate();
   
   const scrollTimeoutRef = useRef(null);
-  const lastScrollYRef = useRef(0);
-  const tickingRef = useRef(false);
+  const topNavbarRef = useRef(null);
+  const searchBarRef = useRef(null);
 
   async function getCategory() {
     try {
@@ -132,49 +132,51 @@ function Navbar() {
     }
   }, [category, activeCategory]);
 
-  // Fixed scroll handler - NO BLINKING
+  // Fixed scroll handler - NO BLINKING with search sticky
   useEffect(() => {
     if (typeof window === 'undefined') return;
     
-    lastScrollYRef.current = window.scrollY;
-
+    let ticking = false;
+    let topNavHeight = 0;
+    
     const handleScroll = () => {
-      if (tickingRef.current) return;
+      if (ticking) return;
       
-      tickingRef.current = true;
+      ticking = true;
       
       requestAnimationFrame(() => {
         const currentScrollY = window.scrollY;
-        const isSmallScreen = window.innerWidth < 640;
-
-        if (!isSmallScreen || currentScrollY <= 10) {
-          setIsNavbarVisible(true);
-        } else if (currentScrollY > lastScrollYRef.current + 5) {
-          setIsNavbarVisible(false);
-          setIsMenuOpen(false);
-        } else if (currentScrollY < lastScrollYRef.current - 5) {
-          setIsNavbarVisible(true);
+        
+        // Get top navbar height if ref exists
+        if (topNavbarRef.current) {
+          topNavHeight = topNavbarRef.current.offsetHeight;
         }
-
-        lastScrollYRef.current = Math.max(currentScrollY, 0);
-        tickingRef.current = false;
+        
+        // Make search bar sticky when scrolled past top navbar
+        if (currentScrollY > topNavHeight - 10) {
+          setIsSearchSticky(true);
+        } else {
+          setIsSearchSticky(false);
+        }
+        
+        ticking = false;
       });
     };
-
+    
+    // Initial calculation
+    handleScroll();
+    
     window.addEventListener("scroll", handleScroll, { passive: true });
     
     const handleResize = () => {
       if (scrollTimeoutRef.current) clearTimeout(scrollTimeoutRef.current);
       scrollTimeoutRef.current = setTimeout(() => {
-        const currentScrollY = window.scrollY;
-        if (window.innerWidth >= 640 || currentScrollY <= 10) {
-          setIsNavbarVisible(true);
-        }
+        handleScroll();
       }, 100);
     };
     
     window.addEventListener("resize", handleResize);
-
+    
     return () => {
       window.removeEventListener("scroll", handleScroll);
       window.removeEventListener("resize", handleResize);
@@ -276,18 +278,14 @@ function Navbar() {
   }, [seenNotificationIds]);
 
   return (
-    <header 
-      className={`sticky top-0 z-50 transition-transform duration-300 ease-in-out ${
-        !isNavbarVisible ? '-translate-y-full' : 'translate-y-0'
-      }`}
-    >
+    <header className="sticky top-0 z-50">
       {/* TOP NAVBAR */}
-      <div className="bg-[#071330] text-white">
+      <div ref={topNavbarRef} className="bg-[#071330] text-white">
         <div className="mx-auto grid max-w-[1440px] gap-3 px-3 py-3 sm:gap-4 sm:px-4 sm:py-4 md:px-6 lg:grid-cols-[auto_auto_minmax(280px,1fr)_auto] lg:items-center">
           {/* LOGO */}
           <a
             className={`text-3xl font-black tracking-tight text-white no-underline sm:text-4xl ${
-              !isNavbarVisible ? "hidden sm:inline-block" : ""
+              isSearchSticky ? "hidden lg:block" : ""
             }`}
             href="/"
           >
@@ -296,7 +294,7 @@ function Navbar() {
           </a>
 
           {/* LOCATION */}
-          <div className="hidden gap-0.5 text-slate-200 sm:grid">
+          <div className={`hidden gap-0.5 text-slate-200 sm:grid ${isSearchSticky ? "lg:hidden" : ""}`}>
             <small className="text-[11px] uppercase tracking-[0.3em]">
               Deliver to.
             </small>
@@ -304,7 +302,9 @@ function Navbar() {
           </div>
 
           {/* SEARCH BAR */}
-          <div className="grid min-w-0 grid-cols-[82px_minmax(0,1fr)_56px] overflow-hidden rounded-xl bg-white shadow-sm sm:grid-cols-[120px_minmax(0,1fr)_100px] sm:rounded-full">
+          <div className={`grid min-w-0 grid-cols-[82px_minmax(0,1fr)_56px] overflow-hidden rounded-xl bg-white shadow-sm sm:grid-cols-[120px_minmax(0,1fr)_100px] sm:rounded-full ${
+            isSearchSticky ? "lg:col-span-2 lg:mx-auto lg:w-full lg:max-w-2xl" : ""
+          }`}>
             <select
               className="min-w-0 border-0 bg-slate-100 px-2 py-3 text-xs text-slate-700 outline-none sm:px-3 sm:text-sm"
               value={searchCategory}
@@ -350,7 +350,7 @@ function Navbar() {
           {/* RIGHT SIDE MENU */}
           <div
             className={`flex min-w-0 flex-wrap items-center gap-2 text-sm font-bold text-white lg:justify-end ${
-              !isNavbarVisible ? "hidden sm:flex" : ""
+              isSearchSticky ? "hidden lg:flex" : ""
             }`}
           >
             {token ? (
@@ -589,12 +589,57 @@ function Navbar() {
         </div>
       </div>
 
+      {/* STICKY SEARCH BAR - Only shows when scrolled */}
+      {isSearchSticky && (
+        <div className="sticky top-0 z-40 bg-[#071330] py-2 shadow-lg lg:hidden">
+          <div className="mx-auto px-3">
+            <div className="grid min-w-0 grid-cols-[90px_minmax(0,1fr)_70px] overflow-hidden rounded-xl bg-white shadow-sm">
+              <select
+                className="min-w-0 border-0 bg-slate-100 px-2 py-2 text-xs text-slate-700 outline-none"
+                value={searchCategory}
+                onChange={(event) => {
+                  setSearchCategory(event.target.value);
+                  setHasSearched(true);
+                }}
+              >
+                <option>All</option>
+                {category.map((item) => (
+                  <option key={item.id} value={item.cname}>
+                    {item.cname}
+                  </option>
+                ))}
+              </select>
+
+              <input
+                className="min-w-0 border-0 px-3 py-2 text-sm text-slate-700 outline-none"
+                placeholder="Search products"
+                type="text"
+                value={searchText}
+                onChange={(event) => {
+                  setSearchText(event.target.value);
+                  setHasSearched(true);
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    handleSearch();
+                  }
+                }}
+              />
+
+              <button
+                className="bg-amber-400 px-3 py-2 text-xs font-bold text-slate-900"
+                type="button"
+                onClick={handleSearch}
+              >
+                Go
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
       {/* CATEGORY NAVBAR */}
-      <div
-        className={`relative bg-[#1b2947] ${
-          !isNavbarVisible ? "hidden sm:block" : ""
-        }`}
-      >
+      <div className="relative bg-[#1b2947]">
         <div className="mx-auto flex max-w-[1440px] items-center gap-2 overflow-x-auto px-3 py-3 sm:px-4 md:px-6">
           <button
             className="shrink-0 rounded-full bg-amber-400 px-4 py-2 text-xs font-bold uppercase tracking-[0.16em] text-[#081b45] sm:px-5 sm:tracking-[0.24em]"
